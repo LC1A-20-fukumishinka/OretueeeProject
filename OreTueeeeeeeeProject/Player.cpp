@@ -18,12 +18,15 @@ Player::Player()
 
 	accelePosX = 0;
 	accelePosY = 0;
-	acceleFlag = false;
+	isCursorFlag = false;
+	isAcceleFlag = false;
 	goalFlag = false;
-	playerYSpeed = 0;
+	playerYSpeed = 0.1;
 	playerXSpeed = 0;
 	playerPosX = 0;
 	playerPosY = 0;
+	startPosX = 0;
+	startPosY = 0;
 	inputX = 0;
 	inputY = 0;
 
@@ -38,14 +41,16 @@ Player::Player()
 
 void Player::Init(double PlayerPosX, double PlayerPosY, double MaxDistance)
 {
-	playerPosX = PlayerPosX;
-	playerPosY = PlayerPosY;
+	startPosX = PlayerPosX;
+	startPosY = PlayerPosY;
+	playerPosX = startPosX;
+	playerPosY = startPosY;
 	playerXSpeed = 0;
-	playerYSpeed = 0;
+	playerYSpeed = 0.1;
 	gravity = 0.49;
 
 	warkMaxSpeed = 5;
-	acceleFlag = false;
+	isCursorFlag = false;
 	goalFlag = false;
 	status = NORMAL;
 	maxDistance = 100;
@@ -57,8 +62,14 @@ void Player::Update()
 	Normal();
 	Setting();
 	Accele();
+	Dead();
 	Collision();
 	Move();
+	if ((status == SETTING)||(status==ACCELE))
+	{
+		scroll.SetScrollPos(playerPosX+((accelePosX-playerPosX)/2), playerPosY+((accelePosY-playerPosY)/2));
+		return;
+	}
 	scroll.SetScrollPos(playerPosX, playerPosY);
 }
 
@@ -70,15 +81,24 @@ void Player::Draw()
 	//床の描画
 	//DrawBox(0, WIN_HEIGHT - Floor, WIN_WIDTH + 1, WIN_HEIGHT, GetColor(0xAA, 0xAA, 0xAA), TRUE);
 
-	for (int i = 0; i < PlayerChip; i++)
-	{
-		DrawBox(playerCollisionX[i] - 1 - scroll.GetScrollX(), playerCollisionY[i] - 1 - scroll.GetScrollY(), playerCollisionX[i] + 1 - scroll.GetScrollX(), playerCollisionY[i] + 1 - scroll.GetScrollY(), GetColor(0xFF, 0xFF, 0xFF), true);
-	}
+	//デバッグ用のマップ判定描画
+	//for (int i = 0; i < PlayerChip; i++)
+	//{
+	//	DrawBox(playerCollisionX[i] - 1 - scroll.GetScrollX(), playerCollisionY[i] - 1 - scroll.GetScrollY(), playerCollisionX[i] + 1 - scroll.GetScrollX(), playerCollisionY[i] + 1 - scroll.GetScrollY(), GetColor(0xFF, 0xFF, 0xFF), true);
+	//}
 	//加速カーソルの描画
-	if (acceleFlag)
+	if (isCursorFlag)
 	{
-		DrawLine(playerDrawPosX + playerR, playerDrawPosY + playerR, acceleDrawPosX, acceleDrawPosY, GetColor(0x00, 0xFF, 0xFF), 10);
-		DrawCircle(acceleDrawPosX, acceleDrawPosY, 10, GetColor(0x0, 0xFF, 0xFF), TRUE);
+		if (isAcceleFlag)
+		{
+			DrawLine(playerDrawPosX + playerR, playerDrawPosY + playerR, acceleDrawPosX, acceleDrawPosY, GetColor(0x22, 0xDD, 0xDD), 10);
+			DrawCircle(acceleDrawPosX, acceleDrawPosY, 10, GetColor(0x22, 0xDD, 0xDD), TRUE);
+		}
+		else
+		{
+			DrawLine(playerDrawPosX + playerR, playerDrawPosY + playerR, acceleDrawPosX, acceleDrawPosY, GetColor(0xDD, 0x22, 0x22), 10);
+			DrawCircle(acceleDrawPosX, acceleDrawPosY, 10, GetColor(0xDD, 0x22, 0x22), TRUE);
+		}
 	}
 }
 
@@ -116,7 +136,7 @@ void Player::Normal()
 	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B)
 	{
 		status = SETTING;
-		acceleFlag = true;
+		isCursorFlag = true;
 	}
 
 	//速度の自然減衰
@@ -184,9 +204,15 @@ void Player::Setting()
 	}
 
 	Edit();
-
-
-
+	int pos = map.GetMapNumber(accelePosX, accelePosY);
+	if (MapchipCollision(pos, Map::PILE))
+	{
+		isAcceleFlag = true;
+	}
+	else
+	{
+		isAcceleFlag = false;
+	}
 	//カーソル移動の終了
 	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B) == 0)
 	{
@@ -195,18 +221,18 @@ void Player::Setting()
 		distanceY = accelePosY - playerPosY;
 		distance = sqrt((distanceX * distanceX) + (distanceY * distanceY));
 		//移動をキャンセルして通常状態に移行する
-		if (distance <= cancelDistance)
+
+		//加速状態に移行する
+		if (isAcceleFlag)
 		{
-			acceleFlag = false;
-			status = NORMAL;
+			playerXSpeed = 0;
+			playerYSpeed = 0;
+			status = ACCELE;
 			return;
 		}
-		//加速状態に移行する
-		playerXSpeed = 0;
-		playerYSpeed = 0;
-		status = ACCELE;
+		isCursorFlag = false;
+		status = NORMAL;
 	}
-
 }
 
 //加速
@@ -228,17 +254,23 @@ void Player::Accele()
 		((distanceY < 0) && (accelePosY - playerPosY >= 0)))
 	{
 		playerYSpeed += 0.001;
-		acceleFlag = false;
+		isCursorFlag = false;
 		status = NORMAL;
 	}
 	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_X)
 	{
 		playerYSpeed += 0.001;
-		acceleFlag = false;
+		isCursorFlag = false;
 		status = NORMAL;
 	}
 
 
+}
+
+void Player::Dead()
+{
+	if (status != DEAD)return;
+	Init(startPosX, startPosY, maxDistance);
 }
 
 void Player::Move()
@@ -246,8 +278,11 @@ void Player::Move()
 	if (status == SETTING)
 	{
 		//慣性移動
-		accelePosX += playerXSpeed / 10;
-		accelePosY += playerYSpeed / 10;
+		if (!isAcceleFlag)
+		{
+			accelePosX += playerXSpeed / 10;
+			accelePosY += playerYSpeed / 10;
+		}
 		playerPosX += playerXSpeed / 10;
 		playerPosY += playerYSpeed / 10;
 		return;
@@ -282,7 +317,7 @@ void Player::Collision()
 
 	for (int i = 0; i < PlayerChip; i++)
 	{
-
+		//	ブロックの当たり判定
 		if ((MapchipCollision(map.GetMapNumber(playerCollisionX[i], playerCollisionY[i]), Map::BLOCK)))
 		{
 			if ((status == ACCELE))
@@ -298,20 +333,30 @@ void Player::Collision()
 				}
 				playerYSpeed = -5;
 				status = NORMAL;
-				acceleFlag = false;
+				isCursorFlag = false;
 			}
 			if (status == NORMAL)
 			{
 				WallCollision(playerCollisionX[i], playerCollisionY[i]);
 			}
 		}
+		//壁との判定
 		if (MapchipCollision(map.GetMapNumber(playerCollisionX[i], playerCollisionY[i]), Map::WALL))
 		{
 			WallCollision(playerCollisionX[i], playerCollisionY[i]);
 		}
+		//ゴールとの判定
 		if (MapchipCollision(map.GetMapNumber(playerCollisionX[i], playerCollisionY[i]), Map::GOAL))
 		{
 			goalFlag = true;
+		}
+		if (MapchipCollision(map.GetMapNumber(playerCollisionX[i], playerCollisionY[i]), Map::LAVA))
+		{
+			if (BoxCollision(playerPosX - playerR, playerPosY - playerR, playerPosX + playerR, playerPosY + playerR, (playerCollisionX[i] / 32) * 32, (playerCollisionY[i] / 32) * 32 + 16, (playerCollisionX[i] / 32 + 1) * 32, (playerCollisionY[i] / 32 + 1) * 32))
+			{
+				status = DEAD;
+			}
+
 		}
 	}
 }
@@ -319,40 +364,53 @@ void Player::Collision()
 void Player::WallCollision(double PosX, double PosY)
 {
 	//上下判定
-	double heightAX = playerPosX-10;
+	double heightAX = playerPosX - 10;
 	double heightAY = playerPosY - playerR;
-	double heightBX = playerPosX+10;
+	double heightBX = playerPosX + 10;
 	double heightBY = playerPosY + playerR;
 	//左右判定
-	double widthAX = playerPosX- playerR;
-	double  widthAY = playerPosY-10;
-	double widthBX = playerPosX+ playerR;
-	double  widthBY = playerPosY;
-
+	double widthAX;
+	double widthAY;
+	double widthBX;
+	double widthBY;
+	if (playerYSpeed >= 0)
+	{
+		widthAX = playerPosX - playerR;
+		widthAY = playerPosY - playerR;
+		widthBX = playerPosX + playerR;
+		widthBY = playerPosY;
+	}
+	else
+	{
+		widthAX = playerPosX - playerR;
+		widthAY = playerPosY;
+		widthBX = playerPosX + playerR;
+		widthBY = playerPosY + playerR;
+	}
 	if (BoxCollision(heightAX, heightAY, heightBX, heightBY, (int)(PosX / 32) * 32, (int)(PosY / 32) * 32, (int)(PosX / 32 + 1) * 32, (int)(PosY / 32 + 1) * 32))
 	{
 
-			if (playerPosY < (int)(PosY / 32) * 32 + 16)
-			{
-				playerPosY = ((int)(PosY / 32) - 1) * 32 + 16;
-				playerYSpeed = 0;
-			}
-			else
-			{
-				playerPosY = ((int)(PosY / 32) + 1) * 32 + 16;
-				playerYSpeed = -0.01;
-			}
+		if (playerPosY < (int)(PosY / 32) * 32 + 16)
+		{
+			playerPosY = ((int)(PosY / 32) - 1) * 32 + 16;
+			playerYSpeed = 0;
+		}
+		else
+		{
+			playerPosY = ((int)(PosY / 32) + 1) * 32 + 16;
+			playerYSpeed = -0.01;
+		}
 	}
 	if (BoxCollision(widthAX, widthAY, widthBX, widthBY, (int)(PosX / 32) * 32, (int)(PosY / 32) * 32, (int)(PosX / 32 + 1) * 32, (int)(PosY / 32 + 1) * 32))
 	{
-			if (playerPosX < (int)(PosX / 32) * 32 + 16)
-			{
-				playerPosX = ((int)(PosX / 32) - 1) * 32 + 16;
-			}
-			else
-			{
-				playerPosX = ((int)(PosX / 32) + 1) * 32 + 16;
-			}
+		if (playerPosX < (int)(PosX / 32) * 32 + 16)
+		{
+			playerPosX = ((int)(PosX / 32) - 1) * 32 + 16;
+		}
+		else
+		{
+			playerPosX = ((int)(PosX / 32) + 1) * 32 + 16;
+		}
 		playerXSpeed = 0;
 	}
 	//	double absX = fabs(playerXSpeed);

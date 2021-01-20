@@ -6,6 +6,7 @@ public:
 	void Init();
 	void Update();
 	void Draw();
-	bool ChsngeSelectScene();
+	bool ChangeSelectScene();
 private:
+	bool flag;
 };
