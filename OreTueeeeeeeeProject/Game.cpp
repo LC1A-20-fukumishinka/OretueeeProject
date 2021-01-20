@@ -12,7 +12,7 @@ void Game::Init()
 {
 	isResultFlag = false;
 	isSelectFlag = false;
-	player.Init(map.GetStartPosX()*mapSize+sizeR,map.GetStartPosY() * mapSize + sizeR,100);
+	player.Init(map.GetStartPosX() * mapSize + sizeR, map.GetStartPosY() * mapSize + sizeR, 100);
 }
 
 void Game::Update()

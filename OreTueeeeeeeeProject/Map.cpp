@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "DxLib.h"
+#include "egudai_Load.h"
 
 int Map::mapSize;
 int Map::mainMap[Map::height][Map::width];
@@ -18,7 +19,7 @@ void Map::Readmap(int MapNumber, int MapSize)
 	mapSize = MapSize;
 	maxBlock = 0;
 	BlockCount = 0;
-	int Map1[height][width] =
+	/*int Map1[height][width] =
 	{
 		{0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -40,7 +41,11 @@ void Map::Readmap(int MapNumber, int MapSize)
 		{0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-	};
+	};*/
+
+	int Map1[height][width] = { 0 };
+	LoadCSV(Map1, "./tamesi.csv"); //./tamesi.csvは読み込みの確認用に適当に作ったマップ
+
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
@@ -66,7 +71,7 @@ void Map::Readmap(int MapNumber, int MapSize)
 //マップチップの番号を受け取る
 int Map::GetMapNumber(double PosX, double PosY)
 {
-	return mainMap[(int)(PosY/mapSize)][(int)(PosX / mapSize)];
+	return mainMap[(int)(PosY / mapSize)][(int)(PosX / mapSize)];
 }
 
 //スタート地点のX座標を返す
