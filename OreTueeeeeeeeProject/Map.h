@@ -7,8 +7,8 @@ class Map
 public:
 	static enum Size
 	{
-		width = 50,
-		height = 20,
+		width = 100,
+		height = 100,
 		mapNum = 6
 	};
 	static int mapSize;
@@ -23,8 +23,10 @@ public:
 		GOAL,
 		PILE,
 		LAVA,
-		SCROLL,
-		MapChip
+		SCROLL_MIN,
+		SCROLL_MAX,
+		MapChip,
+		MapChipGraph = LAVA+1
 	};
 	Map();
 	void Readmap(int MapNumber, int MapSize);
@@ -42,6 +44,8 @@ private:
 
 	static int startPosX;
 	static int startPosY;
+	static int scrollMinX;
+	static int scrollMinY;
 	static int scrollMaxX;
 	static int scrollMaxY;
 	static int maxBlock;
