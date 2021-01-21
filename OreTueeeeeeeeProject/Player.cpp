@@ -21,8 +21,11 @@ Player::Player()
 	isCursorFlag = false;
 	isAcceleFlag = false;
 	goalFlag = false;
+	isScrollFlag = false;
 	playerYSpeed = 0.1;
 	playerXSpeed = 0;
+	scrollDistanceX=0;
+	scrollDistanceY=0;
 	playerPosX = 0;
 	playerPosY = 0;
 	startPosX = 0;
@@ -52,6 +55,7 @@ void Player::Init(double PlayerPosX, double PlayerPosY, double MaxDistance)
 	warkMaxSpeed = 5;
 	isCursorFlag = false;
 	goalFlag = false;
+	isScrollFlag = false;
 	status = NORMAL;
 	maxDistance = 100;
 }
@@ -65,12 +69,7 @@ void Player::Update()
 	Dead();
 	Collision();
 	Move();
-	if ((status == SETTING)||(status==ACCELE))
-	{
-		scroll.SetScrollPos(playerPosX+((accelePosX-playerPosX)/2), playerPosY+((accelePosY-playerPosY)/2));
-		return;
-	}
-	scroll.SetScrollPos(playerPosX, playerPosY);
+	scrollUpdate();
 }
 
 void Player::Draw()
@@ -82,10 +81,10 @@ void Player::Draw()
 	//DrawBox(0, WIN_HEIGHT - Floor, WIN_WIDTH + 1, WIN_HEIGHT, GetColor(0xAA, 0xAA, 0xAA), TRUE);
 
 	//デバッグ用のマップ判定描画
-	//for (int i = 0; i < PlayerChip; i++)
-	//{
-	//	DrawBox(playerCollisionX[i] - 1 - scroll.GetScrollX(), playerCollisionY[i] - 1 - scroll.GetScrollY(), playerCollisionX[i] + 1 - scroll.GetScrollX(), playerCollisionY[i] + 1 - scroll.GetScrollY(), GetColor(0xFF, 0xFF, 0xFF), true);
-	//}
+	for (int i = 0; i < PlayerChip; i++)
+	{
+		DrawBox(playerCollisionX[i] - 1 - scroll.GetScrollX(), playerCollisionY[i] - 1 - scroll.GetScrollY(), playerCollisionX[i] + 1 - scroll.GetScrollX(), playerCollisionY[i] + 1 - scroll.GetScrollY(), GetColor(0xFF, 0xFF, 0xFF), true);
+	}
 	//加速カーソルの描画
 	if (isCursorFlag)
 	{
@@ -205,6 +204,11 @@ void Player::Setting()
 
 	Edit();
 	int pos = map.GetMapNumber(accelePosX, accelePosY);
+
+
+	distanceX = accelePosX - playerPosX;
+	distanceY = accelePosY - playerPosY;
+	distance = sqrt((distanceX * distanceX) + (distanceY * distanceY));
 	if (MapchipCollision(pos, Map::PILE))
 	{
 		isAcceleFlag = true;
@@ -213,13 +217,10 @@ void Player::Setting()
 	{
 		isAcceleFlag = false;
 	}
+
 	//カーソル移動の終了
 	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B) == 0)
 	{
-
-		distanceX = accelePosX - playerPosX;
-		distanceY = accelePosY - playerPosY;
-		distance = sqrt((distanceX * distanceX) + (distanceY * distanceY));
 		//移動をキャンセルして通常状態に移行する
 
 		//加速状態に移行する
@@ -473,4 +474,25 @@ void Player::Edit()
 	{
 		playerYSpeed = -fallMaxSpeed;
 	}
+}
+
+void Player::scrollUpdate()
+{
+	if (status == SETTING)
+	{
+		scroll.SetScrollPos(playerPosX + (distanceX / 2), playerPosY + (distanceY / 2));
+		isScrollFlag = true;
+		return;
+	}
+	if (isScrollFlag)
+	{
+		double scrollT = 1-easeScroll.EasingMaker(Easing::Out, Easing::Quad, 10);
+		scroll.SetScrollPos(playerPosX + (distanceX / 2) * scrollT, playerPosY + (distanceY / 2) * scrollT);
+		if (easeScroll.Finish())
+		{
+			isScrollFlag = false;
+		}
+		return;
+	}
+	scroll.SetScrollPos(playerPosX, playerPosY);
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "Map.h"
 #include "Scroll.h"
+#include "EaseClass.h"
 extern const int WIN_WIDTH;
 extern const int WIN_HEIGHT;
 extern const int Floor;
@@ -49,6 +50,8 @@ private:
 	//実際の移動速度
 	double playerYSpeed;
 	double playerXSpeed;
+	double scrollDistanceX;
+	double scrollDistanceY;
 
 	//速度上限
 	int warkMaxSpeed;
@@ -63,6 +66,8 @@ private:
 	bool isCursorFlag;
 	//加速可能フラグ
 	bool isAcceleFlag;
+	//スクロール戻し描画フラグ
+	bool isScrollFlag;
 	//ゴールフラグ
 	bool goalFlag;
 	//入力
@@ -91,6 +96,7 @@ private:
 
 	Map map;
 	Scroll scroll;
+	Easing easeScroll;
 	void Joypad();
 	void Normal();
 	void Setting();
@@ -101,4 +107,5 @@ private:
 	void Collision();
 	void WallCollision(double PosX, double PosY);
 	void Edit();
+	void scrollUpdate();
 };
