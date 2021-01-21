@@ -486,7 +486,7 @@ void Player::scrollUpdate()
 	}
 	if (isScrollFlag)
 	{
-		double scrollT = 1-easeScroll.EasingMaker(Easing::Out, Easing::Quad, 10);
+		double scrollT = 1-easeScroll.EasingMaker(Easing::Out, Easing::Quad, 30);
 		scroll.SetScrollPos(playerPosX + (distanceX / 2) * scrollT, playerPosY + (distanceY / 2) * scrollT);
 		if (easeScroll.Finish())
 		{

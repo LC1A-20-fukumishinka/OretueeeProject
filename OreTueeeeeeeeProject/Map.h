@@ -8,7 +8,7 @@ public:
 	static enum Size
 	{
 		width = 100,
-		height = 100,
+		height = 40,
 		mapNum = 6
 	};
 	static int mapSize;
