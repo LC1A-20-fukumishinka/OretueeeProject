@@ -23,6 +23,7 @@ public:
 		GOAL,
 		PILE,
 		LAVA,
+		SCROLL,
 		MapChip
 	};
 	Map();
@@ -41,6 +42,8 @@ private:
 
 	static int startPosX;
 	static int startPosY;
+	static int scrollMaxX;
+	static int scrollMaxY;
 	static int maxBlock;
 	static int BlockCount;
 };
