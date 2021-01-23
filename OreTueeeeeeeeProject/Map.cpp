@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "DxLib.h"
+#include "egudai_Load.h"
 
 int Map::mapSize;
 int Map::mainMap[Map::height][Map::width];
@@ -153,13 +154,17 @@ void Map::Readmap(int MapNumber, int MapSize)
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }
 		},
 	};
+
+	//int Map1[height][width] = { 0 };
+	//LoadCSV(Map1, "./tamesi.csv"); //./tamesi.csvã¯èª­ã¿è¾¼ã¿ã®ç¢ºèªç”¨ã«é©å½“ã«ä½œã£ãŸãƒãƒƒãƒ—
+
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
 
 			mainMap[y][x] = Map[MapNumber][y][x];
-			//ƒvƒŒƒCƒ„[‚Ì‰ŠúÀ•W‚Ìƒ}ƒbƒvƒ`ƒbƒv‚ğ”­Œ©‚·‚é
+			//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸåº§æ¨™ã®ãƒãƒƒãƒ—ãƒãƒƒãƒ—ã‚’ç™ºè¦‹ã™ã‚‹
 			if (mainMap[y][x] == START)
 			{
 				startPosX = x;
@@ -175,25 +180,25 @@ void Map::Readmap(int MapNumber, int MapSize)
 	scroll.Init(WIN_WIDTH / 2, WIN_HEIGHT / 2, width * mapSize - WIN_WIDTH / 2, (height - 1) * mapSize - WIN_HEIGHT / 2);
 }
 
-//ƒ}ƒbƒvƒ`ƒbƒv‚Ì”Ô†‚ğó‚¯æ‚é
+//ãƒãƒƒãƒ—ãƒãƒƒãƒ—ã®ç•ªå·ã‚’å—ã‘å–ã‚‹
 int Map::GetMapNumber(double PosX, double PosY)
 {
 	return mainMap[(int)(PosY / mapSize)][(int)(PosX / mapSize)];
 }
 
-//ƒXƒ^[ƒg’n“_‚ÌXÀ•W‚ğ•Ô‚·
+//ã‚¹ã‚¿ãƒ¼ãƒˆåœ°ç‚¹ã®Xåº§æ¨™ã‚’è¿”ã™
 int Map::GetStartPosX()
 {
 	return startPosX;
 }
 
-//ƒXƒ^[ƒg’n“_‚ÌYÀ•W‚ğ•Ô‚·
+//ã‚¹ã‚¿ãƒ¼ãƒˆåœ°ç‚¹ã®Yåº§æ¨™ã‚’è¿”ã™
 int Map::GetStartPosY()
 {
 	return startPosY;
 }
 
-//ƒ}ƒbƒv”Ô†‚ğ•ÏX‚·‚é
+//ãƒãƒƒãƒ—ç•ªå·ã‚’å¤‰æ›´ã™ã‚‹
 void Map::ChangeMapNumber(double PosX, double PosY, int mapNumber)
 {
 	if ((mainMap[(int)(PosY / mapSize)][(int)(PosX / mapSize)] == BLOCK) && (mapNumber == NONE))
