@@ -8,7 +8,8 @@ public:
 	static enum Size
 	{
 		width = 50,
-		height = 20
+		height = 20,
+		mapNum = 6
 	};
 	static int mapSize;
 	static int mainMap[height][width];
@@ -20,6 +21,8 @@ public:
 		BLOCK,
 		START,
 		GOAL,
+		PILE,
+		LAVA,
 		MapChip
 	};
 	Map();
@@ -28,7 +31,8 @@ public:
 	int GetStartPosX();
 	int GetStartPosY();
 	void ChangeMapNumber(double PosX, double PosY, int mapNumber);
-	void Draw();
+	void DrawBack();
+	void DrawFront();
 private:
 
 	Scroll scroll;

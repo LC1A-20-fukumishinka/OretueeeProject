@@ -17,7 +17,8 @@ private:
 	{
 		NORMAL,
 		SETTING,
-		ACCELE
+		ACCELE,
+		DEAD
 	};
 	enum playerPos
 	{
@@ -30,6 +31,8 @@ private:
 	//プレイヤーの座標
 	double playerPosX;
 	double playerPosY;
+	double startPosX;
+	double startPosY;
 	double playerDrawPosX;
 	double playerDrawPosY;
 
@@ -57,8 +60,9 @@ private:
 	double acceleDrawPosX;
 	double acceleDrawPosY;
 	//加速フラグ
-	bool acceleFlag;
-
+	bool isCursorFlag;
+	//加速可能フラグ
+	bool isAcceleFlag;
 	//ゴールフラグ
 	bool goalFlag;
 	//入力
@@ -91,6 +95,7 @@ private:
 	void Normal();
 	void Setting();
 	void Accele();
+	void Dead();
 	void Move();
 	void SetDrawPos();
 	void Collision();

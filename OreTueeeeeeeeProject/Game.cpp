@@ -38,8 +38,9 @@ void Game::Update()
 
 void Game::Draw()
 {
-	map.Draw();
+	map.DrawBack();
 	player.Draw();
+	map.DrawFront();
 }
 
 bool Game::ChangeResultScene()

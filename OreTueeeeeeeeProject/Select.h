@@ -10,7 +10,9 @@ public:
 	int SetStageNum();
 private:
 	int joypadX;
+	int oldpadX;
 	int joypadY;
+	int oldpadY;
 	bool isSelectFlag;
 	int stageNum;
 	int stageMaxNum;

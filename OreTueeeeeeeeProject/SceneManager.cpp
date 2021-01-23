@@ -43,7 +43,7 @@ void SceneManager::SceneChange()
 	{
 	case TITLE:
 		//ステージ選択に移行
-		if (title.ChsngeSelectScene())SceneStatus = SELECT;
+		if (title.ChangeSelectScene())SceneStatus = SELECT;
 		break;
 	case SELECT:
 		//ゲームシーンに移行
