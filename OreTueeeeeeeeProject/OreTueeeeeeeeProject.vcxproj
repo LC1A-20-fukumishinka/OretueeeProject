@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="collision.cpp" />
+    <ClCompile Include="egudai_Death.cpp" />
     <ClCompile Include="egudai_Load.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="input.cpp" />
@@ -142,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision.h" />
+    <ClInclude Include="egudai_Death.h" />
     <ClInclude Include="egudai_Load.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="input.h" />
@@ -152,6 +154,13 @@
     <ClInclude Include="Scroll.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Title.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="mapchip.png" />
+    <Image Include="particle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tamesi.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

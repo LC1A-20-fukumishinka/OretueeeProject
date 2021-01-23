@@ -12,13 +12,28 @@ void Game::Init()
 {
 	isResultFlag = false;
 	isSelectFlag = false;
-	player.Init(map.GetStartPosX() * mapSize + sizeR, map.GetStartPosY() * mapSize + sizeR, 100);
+	player.Init(map.GetStartPosX()*mapSize+sizeR,map.GetStartPosY() * mapSize + sizeR,100);
 }
 
 void Game::Update()
 {
 	player.Update();
 	scroll.Update();
+	if (false) //‚±‚±‚ÌğŒ®‚Íâ‘Î‚É•Ï‚¦‚Ä‚­‚¾‚³‚¢
+	{
+		if (death.GetFlag() == true)
+		{
+			death.Init(400, 200, 16); //’l‚Í“K“–‚Å‚·
+		}
+		death.Update();
+		if (death.GetFlag() == true && death.GetOldFlag() == false)
+		{
+			/*€–S‚Ì‰Šú‰»*/
+			map.Readmap(1, mapSize);
+
+			Init();
+		}
+	}
 }
 
 void Game::Draw()

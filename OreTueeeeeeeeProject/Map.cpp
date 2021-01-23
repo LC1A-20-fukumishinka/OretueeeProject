@@ -71,7 +71,7 @@ void Map::Readmap(int MapNumber, int MapSize)
 //マップチップの番号を受け取る
 int Map::GetMapNumber(double PosX, double PosY)
 {
-	return mainMap[(int)(PosY / mapSize)][(int)(PosX / mapSize)];
+	return mainMap[(int)(PosY/mapSize)][(int)(PosX / mapSize)];
 }
 
 //スタート地点のX座標を返す
