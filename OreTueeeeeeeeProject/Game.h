@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "Scroll.h"
+#include "egudai_Death.h"
 //ƒQ[ƒ€ƒV[ƒ“
 class Game
 {
@@ -22,4 +23,6 @@ private:
 	int sizeR;
 	bool isResultFlag;
 	bool isSelectFlag;
+
+	Death death;
 };

@@ -128,7 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="collision.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="EaseClass.cpp" />
+=======
+    <ClCompile Include="egudai_Death.cpp" />
+    <ClCompile Include="egudai_Load.cpp" />
+>>>>>>> 6d90abac9db92d09afd6a057b6bbec24df17fae2
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
@@ -142,7 +147,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision.h" />
+<<<<<<< HEAD
     <ClInclude Include="EaseClass.h" />
+=======
+    <ClInclude Include="egudai_Death.h" />
+    <ClInclude Include="egudai_Load.h" />
+>>>>>>> 6d90abac9db92d09afd6a057b6bbec24df17fae2
     <ClInclude Include="Game.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="Map.h" />
@@ -152,6 +162,13 @@
     <ClInclude Include="Scroll.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Title.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="mapchip.png" />
+    <Image Include="particle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tamesi.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "DxLib.h"
+#include "egudai_Load.h"
 
 int Map::mapSize;
 int Map::mainMap[Map::height][Map::width];
@@ -237,13 +238,17 @@ void Map::Readmap(int MapNumber, int MapSize)
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,8}
 	}
 	};
+
+	//int Map1[height][width] = { 0 };
+	//LoadCSV(Map1, "./tamesi.csv"); //./tamesi.csv縺ｯ隱ｭ縺ｿ霎ｼ縺ｿ縺ｮ遒ｺ隱咲畑縺ｫ驕ｩ蠖薙↓菴懊▲縺溘・繝・・
+
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
 
 			mainMap[y][x] = Map[MapNumber][y][x];
-			//プレイヤーの初期座標のマップチップを発見する
+			//繝励Ξ繧､繝､繝ｼ縺ｮ蛻晄悄蠎ｧ讓吶・繝槭ャ繝励メ繝・・繧堤匱隕九☆繧・
 			if (mainMap[y][x] == START)
 			{
 				startPosX = x;
@@ -271,25 +276,25 @@ void Map::Readmap(int MapNumber, int MapSize)
 	scroll.Init(scrollMinX * mapSize + WIN_WIDTH / 2, scrollMinY * mapSize + WIN_HEIGHT / 2, scrollMaxX * mapSize - WIN_WIDTH / 2, scrollMaxY * mapSize - WIN_HEIGHT / 2);
 }
 
-//マップチップの番号を受け取る
+//繝槭ャ繝励メ繝・・縺ｮ逡ｪ蜿ｷ繧貞女縺大叙繧・
 int Map::GetMapNumber(double PosX, double PosY)
 {
 	return mainMap[(int)(PosY / mapSize)][(int)(PosX / mapSize)];
 }
 
-//スタート地点のX座標を返す
+//繧ｹ繧ｿ繝ｼ繝亥慍轤ｹ縺ｮX蠎ｧ讓吶ｒ霑斐☆
 int Map::GetStartPosX()
 {
 	return startPosX;
 }
 
-//スタート地点のY座標を返す
+//繧ｹ繧ｿ繝ｼ繝亥慍轤ｹ縺ｮY蠎ｧ讓吶ｒ霑斐☆
 int Map::GetStartPosY()
 {
 	return startPosY;
 }
 
-//マップ番号を変更する
+//繝槭ャ繝礼分蜿ｷ繧貞､画峩縺吶ｋ
 void Map::ChangeMapNumber(double PosX, double PosY, int mapNumber)
 {
 	if ((mainMap[(int)(PosY / mapSize)][(int)(PosX / mapSize)] == BLOCK) && (mapNumber == NONE))

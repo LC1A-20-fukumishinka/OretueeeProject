@@ -48,7 +48,14 @@
     <ClCompile Include="Result.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="EaseClass.cpp">
+=======
+    <ClCompile Include="egudai_Load.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="egudai_Death.cpp">
+>>>>>>> 6d90abac9db92d09afd6a057b6bbec24df17fae2
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,8 +90,30 @@
     <ClInclude Include="Result.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="EaseClass.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+=======
+    <ClInclude Include="egudai_Load.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="egudai_Death.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="mapchip.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="particle.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tamesi.csv">
+      <Filter>リソース ファイル</Filter>
+    </None>
+>>>>>>> 6d90abac9db92d09afd6a057b6bbec24df17fae2
   </ItemGroup>
 </Project>
