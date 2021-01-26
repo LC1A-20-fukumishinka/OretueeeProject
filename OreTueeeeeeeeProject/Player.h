@@ -13,13 +13,31 @@ public:
 	void Update();
 	void Draw();
 	bool GetGoalFlag();
+	bool GetReturnFlag();
+	bool GetItemFlag();
+
+	static int playerWarkGraph[6];
+	static int playerIdolGraph[2];
 private:
-	enum Status
+	enum acceleStatus
 	{
 		NORMAL,
 		SETTING,
 		ACCELE,
 		DEAD
+	};
+	enum animationStatus
+	{
+		IDOL,
+		WARK,
+		IDOL_TIMER=20,
+		WARK_TIMER = 5
+	};
+	enum pauseStatus
+	{
+		RESUME,
+		RETURN,
+		menuEnd
 	};
 	enum playerPos
 	{
@@ -71,8 +89,8 @@ private:
 	//ゴールフラグ
 	bool goalFlag;
 	//入力
-	int inputX;
-	int inputY;
+	int inputX,oldInputX;
+	int inputY,oldInputY;
 
 	//ひとつ前のフレームのフラグ
 	bool oldFlag;
@@ -93,6 +111,19 @@ private:
 	//限界の距離
 	double maxDistance;
 
+	//アニメーション関係のステータス
+	int graphNum;
+	int animationTimer;
+	int animationStatus;
+	int animationOldStatus;
+	bool isTurnFlag;
+	bool isItemFlag;
+
+	//ポーズメニュー
+	bool isMenuFlag;
+	bool isReturnFlag;
+	bool isPauseFlag;
+	int menuStatus;
 
 	Map map;
 	Scroll scroll;
@@ -101,6 +132,7 @@ private:
 	void Normal();
 	void Setting();
 	void Accele();
+	void Menu();
 	void Dead();
 	void Move();
 	void SetDrawPos();
@@ -108,4 +140,6 @@ private:
 	void WallCollision(double PosX, double PosY);
 	void Edit();
 	void scrollUpdate();
+	void PlayerMapchipUpdate();
+	void Animation();
 };

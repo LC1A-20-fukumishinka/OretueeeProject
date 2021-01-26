@@ -4,10 +4,11 @@
 #include "collision.h"
 #include <math.h>
 using namespace collision;
+
+int Player::playerIdolGraph[] = { 0 };
+int Player::playerWarkGraph[] = { 0 };
 Player::Player()
 {
-
-
 	warkSpeed = 0.6;
 	playerR = 16;
 	gravity = 0.49;
@@ -24,21 +25,36 @@ Player::Player()
 	isScrollFlag = false;
 	playerYSpeed = 0.1;
 	playerXSpeed = 0;
-	scrollDistanceX=0;
-	scrollDistanceY=0;
+	scrollDistanceX = 0;
+	scrollDistanceY = 0;
 	playerPosX = 0;
 	playerPosY = 0;
 	startPosX = 0;
 	startPosY = 0;
 	inputX = 0;
 	inputY = 0;
-
+	oldInputX = 0;
+	oldInputY = 0;
 	oldFlag = 0;
 	distanceX = 0;
 	distanceY = 0;
 	distance = 0;
 	status = NORMAL;
 	acceleSpeed = 1;
+
+	graphNum = 0;
+	animationTimer = 0;;
+	animationStatus = IDOL;
+	animationOldStatus = IDOL;
+	LoadDivGraph("playerIdol.png", 2, 2, 1, 32, 32, playerIdolGraph);
+	LoadDivGraph("playerWark.png", 6, 6, 1, 32, 32, playerWarkGraph);
+	isTurnFlag = false;
+
+	isMenuFlag = false;
+	isReturnFlag = false;
+	isPauseFlag = false;
+	isItemFlag=false;
+	menuStatus = RESUME;
 
 }
 
@@ -58,16 +74,29 @@ void Player::Init(double PlayerPosX, double PlayerPosY, double MaxDistance)
 	isScrollFlag = false;
 	status = NORMAL;
 	maxDistance = 100;
+
+	graphNum = 0;
+	animationTimer = 0;;
+	animationStatus = IDOL;
+	animationOldStatus = IDOL;
+	isMenuFlag = false;
+	isReturnFlag = false;
+	isPauseFlag = false;
+	isItemFlag = false;
+	menuStatus = RESUME;
 }
 
 void Player::Update()
 {
 	Joypad();
+	Menu();
+	if (isMenuFlag)return;
 	Normal();
 	Setting();
 	Accele();
 	Dead();
 	Collision();
+	Animation();
 	Move();
 	scrollUpdate();
 }
@@ -75,12 +104,23 @@ void Player::Update()
 void Player::Draw()
 {
 	SetDrawPos();
-	//自機の描画
-	DrawBox(playerDrawPosX, playerDrawPosY, playerDrawPosX + playerR * 2, playerDrawPosY + playerR * 2, GetColor(0xAA, 0xAA, 0x00), TRUE);
-	//床の描画
-	//DrawBox(0, WIN_HEIGHT - Floor, WIN_WIDTH + 1, WIN_HEIGHT, GetColor(0xAA, 0xAA, 0xAA), TRUE);
+	//自機の描画(仮)
+	//DrawBox(playerDrawPosX, playerDrawPosY, playerDrawPosX + playerR * 2, playerDrawPosY + playerR * 2, GetColor(0xAA, 0xAA, 0x00), TRUE);
+	switch (animationStatus)
+	{
+	case IDOL:
+		DrawRotaGraph(playerDrawPosX + playerR, playerDrawPosY + playerR, 1.0, 0, playerIdolGraph[graphNum], TRUE, isTurnFlag);
+		/*DrawGraph(playerDrawPosX, playerDrawPosY, playerIdolGraph[graphNum], TRUE);*/
+		break;
+	case WARK:
+		DrawRotaGraph(playerDrawPosX + playerR, playerDrawPosY + playerR, 1.0, 0, playerWarkGraph[graphNum], TRUE, isTurnFlag);
+		break;
+	default:
+		break;
+	}
 
-	//デバッグ用のマップ判定描画
+
+	//デバッグ用のマップ判定描画(白点)
 	for (int i = 0; i < PlayerChip; i++)
 	{
 		DrawBox(playerCollisionX[i] - 1 - scroll.GetScrollX(), playerCollisionY[i] - 1 - scroll.GetScrollY(), playerCollisionX[i] + 1 - scroll.GetScrollX(), playerCollisionY[i] + 1 - scroll.GetScrollY(), GetColor(0xFF, 0xFF, 0xFF), true);
@@ -99,11 +139,33 @@ void Player::Draw()
 			DrawCircle(acceleDrawPosX, acceleDrawPosY, 10, GetColor(0xDD, 0x22, 0x22), TRUE);
 		}
 	}
+	DrawFormatString(0, 0, GetColor(0xBB, 0xBB, 0xBB), "ITEM %d/1",isItemFlag);
+
+	if (isMenuFlag)
+	{
+		int mainPosX = WIN_WIDTH / 2 - 40, mainPosY=WIN_HEIGHT / 2;
+		DrawBox(WIN_WIDTH / 2 - 100, WIN_HEIGHT / 2 - 75, WIN_WIDTH / 2 + 100, WIN_HEIGHT / 2 + 75, GetColor(0x33, 0x33, 0x33), true);
+		DrawFormatString(mainPosX, mainPosY, GetColor(0xBB, 0xBB, 0xBB), "RESUME");
+		DrawFormatString(mainPosX, mainPosY + 25, GetColor(0xBB, 0xBB, 0xBB), "SELECT");
+
+		DrawTriangle(mainPosX-5, mainPosY +8 + (menuStatus * 25), mainPosX - 10, mainPosY +3 + (menuStatus * 25), mainPosX - 10, mainPosY + 13 + (menuStatus * 25),
+			GetColor(0xBB, 0xBB, 0xBB), true);
+	}
 }
 
 bool Player::GetGoalFlag()
 {
 	return goalFlag;
+}
+
+bool Player::GetReturnFlag()
+{
+	return isReturnFlag;
+}
+
+bool Player::GetItemFlag()
+{
+	return isItemFlag;
 }
 
 //入力
@@ -268,10 +330,67 @@ void Player::Accele()
 
 }
 
+void Player::Menu()
+{
+	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_8)
+	{
+		if (!isPauseFlag)
+		{
+			if (isMenuFlag)
+			{
+				isMenuFlag = false;
+			}
+			else
+			{
+				isMenuFlag = true;
+				menuStatus = RESUME;
+			}
+		}
+	}
+	isPauseFlag = GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_8;
+	if (!isMenuFlag)return;
+	if ((inputY >= 100) && (oldInputY < 100))
+	{
+		menuStatus++;
+		if (menuStatus >= menuEnd)
+		{
+			menuStatus = RESUME;
+		}
+	}
+	if ((inputY <= -100) && (oldInputY > -100))
+	{
+		menuStatus--;
+		if (menuStatus <= -1)
+		{
+			menuStatus = menuEnd - 1;
+		}
+	}
+	if (Input::IsPadATrigger())
+	{
+		switch (menuStatus)
+		{
+		case RESUME:
+			isMenuFlag = false;
+			break;
+		case RETURN:
+			isReturnFlag=true;
+			break;
+		default:
+			break;
+		}
+
+	}
+	oldInputX = inputX;
+	oldInputY = inputY;
+
+}
+
 void Player::Dead()
 {
 	if (status != DEAD)return;
+	bool sum=isItemFlag;
 	Init(startPosX, startPosY, maxDistance);
+	isItemFlag = sum;
 }
 
 void Player::Move()
@@ -304,47 +423,21 @@ void Player::SetDrawPos()
 void Player::Collision()
 {
 
-	playerCollisionX[LeftUp] = playerPosX + playerXSpeed - playerR;
-	playerCollisionY[LeftUp] = playerPosY + playerYSpeed - playerR;
-
-	playerCollisionX[RightUp] = playerPosX + playerXSpeed + playerR - 1;
-	playerCollisionY[RightUp] = playerPosY + playerYSpeed - playerR;
-
-	playerCollisionX[RightDown] = playerPosX + playerXSpeed + playerR - 1;
-	playerCollisionY[RightDown] = playerPosY + playerYSpeed + playerR - 1;
-
-	playerCollisionX[LeftDown] = playerPosX + playerXSpeed - playerR;
-	playerCollisionY[LeftDown] = playerPosY + playerYSpeed + playerR - 1;
-
+	PlayerMapchipUpdate();
 	for (int i = 0; i < PlayerChip; i++)
 	{
 		//	ブロックの当たり判定
 		if ((MapchipCollision(map.GetMapNumber(playerCollisionX[i], playerCollisionY[i]), Map::BLOCK)))
 		{
-			if ((status == ACCELE))
-			{
-				map.ChangeMapNumber(playerCollisionX[i], playerCollisionY[i], Map::NONE);
-				if (playerXSpeed < 0)
-				{
-					playerXSpeed = 2;
-				}
-				if (playerXSpeed > 0)
-				{
-					playerXSpeed = -2;
-				}
-				playerYSpeed = -5;
-				status = NORMAL;
-				isCursorFlag = false;
-			}
-			if (status == NORMAL)
-			{
-				WallCollision(playerCollisionX[i], playerCollisionY[i]);
-			}
+			map.ChangeMapNumber(playerCollisionX[i], playerCollisionY[i], Map::NONE);
+			isItemFlag = true;
 		}
 		//壁との判定
 		if (MapchipCollision(map.GetMapNumber(playerCollisionX[i], playerCollisionY[i]), Map::WALL))
 		{
+			int a = map.GetMapNumber(playerCollisionX[i], playerCollisionY[i]);
 			WallCollision(playerCollisionX[i], playerCollisionY[i]);
+			PlayerMapchipUpdate();
 		}
 		//ゴールとの判定
 		if (MapchipCollision(map.GetMapNumber(playerCollisionX[i], playerCollisionY[i]), Map::GOAL))
@@ -388,27 +481,31 @@ void Player::WallCollision(double PosX, double PosY)
 		widthBX = playerPosX + playerR;
 		widthBY = playerPosY + playerR;
 	}
+
+	//縦
 	if (BoxCollision(heightAX, heightAY, heightBX, heightBY, (int)(PosX / 32) * 32, (int)(PosY / 32) * 32, (int)(PosX / 32 + 1) * 32, (int)(PosY / 32 + 1) * 32))
 	{
 
-		if (playerPosY < (int)(PosY / 32) * 32 + 16)
+		if (playerYSpeed > 0)
 		{
 			playerPosY = ((int)(PosY / 32) - 1) * 32 + 16;
 			playerYSpeed = 0;
 		}
-		else
+		else if (playerYSpeed < 0)
 		{
 			playerPosY = ((int)(PosY / 32) + 1) * 32 + 16;
-			playerYSpeed = -0.01;
+			playerYSpeed = 0.1;
 		}
 	}
+
+	//横
 	if (BoxCollision(widthAX, widthAY, widthBX, widthBY, (int)(PosX / 32) * 32, (int)(PosY / 32) * 32, (int)(PosX / 32 + 1) * 32, (int)(PosY / 32 + 1) * 32))
 	{
-		if (playerPosX < (int)(PosX / 32) * 32 + 16)
+		if (playerXSpeed > 0)
 		{
 			playerPosX = ((int)(PosX / 32) - 1) * 32 + 16;
 		}
-		else
+		else if (playerXSpeed < 0)
 		{
 			playerPosX = ((int)(PosX / 32) + 1) * 32 + 16;
 		}
@@ -486,7 +583,7 @@ void Player::scrollUpdate()
 	}
 	if (isScrollFlag)
 	{
-		double scrollT = 1-easeScroll.EasingMaker(Easing::Out, Easing::Quad, 30);
+		double scrollT = 1 - easeScroll.EasingMaker(Easing::Out, Easing::Quad, 30);
 		scroll.SetScrollPos(playerPosX + (distanceX / 2) * scrollT, playerPosY + (distanceY / 2) * scrollT);
 		if (easeScroll.Finish())
 		{
@@ -495,4 +592,81 @@ void Player::scrollUpdate()
 		return;
 	}
 	scroll.SetScrollPos(playerPosX, playerPosY);
+}
+
+void Player::PlayerMapchipUpdate()
+{
+	playerCollisionX[LeftUp] = playerPosX + playerXSpeed - playerR;
+	playerCollisionY[LeftUp] = playerPosY + playerYSpeed - playerR;
+
+	playerCollisionX[RightUp] = playerPosX + playerXSpeed + playerR;
+	playerCollisionY[RightUp] = playerPosY + playerYSpeed - playerR;
+
+	playerCollisionX[RightDown] = playerPosX + playerXSpeed + playerR;
+	playerCollisionY[RightDown] = playerPosY + playerYSpeed + playerR;
+
+	playerCollisionX[LeftDown] = playerPosX + playerXSpeed - playerR;
+	playerCollisionY[LeftDown] = playerPosY + playerYSpeed + playerR;
+}
+
+void Player::Animation()
+{
+	if (playerXSpeed > 0)
+	{
+		isTurnFlag = false;
+	}
+	else if (playerXSpeed < 0)
+	{
+		isTurnFlag = true;
+	}
+	switch (animationStatus)
+	{
+	case IDOL:
+		if (playerXSpeed != 0)
+		{
+			animationStatus = WARK;
+			graphNum = 0;
+			animationTimer = WARK_TIMER;
+		}
+
+		//アニメーション進行
+		if (animationTimer <= 0)
+		{
+			animationTimer = IDOL_TIMER;
+			if (graphNum == 1)
+			{
+				graphNum = 0;
+			}
+			else
+			{
+				graphNum++;
+			}
+		}
+		--animationTimer;
+		break;
+	case WARK:
+		if (playerXSpeed == 0)
+		{
+			animationStatus = IDOL;
+			graphNum = 0;
+			animationTimer = IDOL_TIMER;
+		}
+		//アニメーション進行
+		if (animationTimer <= 0)
+		{
+			animationTimer = WARK_TIMER;
+			if (graphNum == 5)
+			{
+				graphNum = 0;
+			}
+			else
+			{
+				graphNum++;
+			}
+		}
+		--animationTimer;
+		break;
+	default:
+		break;
+	}
 }

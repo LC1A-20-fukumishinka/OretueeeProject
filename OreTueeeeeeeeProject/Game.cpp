@@ -35,5 +35,5 @@ bool Game::ChangeResultScene()
 
 bool Game::ChangeSelectScene()
 {
-	return isSelectFlag;
+	return player.GetReturnFlag();
 }

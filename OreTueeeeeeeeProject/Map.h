@@ -8,8 +8,8 @@ public:
 	static enum Size
 	{
 		width = 100,
-		height = 40,
-		mapNum = 6
+		height = 100,
+		mapNum = 9
 	};
 	static int mapSize;
 	static int mainMap[height][width];
