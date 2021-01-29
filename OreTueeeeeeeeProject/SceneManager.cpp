@@ -35,6 +35,8 @@ void SceneManager::Draw()
 	default:
 		break;
 	}
+
+	screenTrans.Draw();
 }
 
 void SceneManager::SceneChange()
@@ -62,6 +64,7 @@ void SceneManager::SceneChange()
 		{
 			SceneStatus = RESULT;
 			result.Init();
+			screenTrans.Init(10);
 		}
 		//ステージ選択に移行する
 		if (game.ChangeSelectScene())

@@ -19,7 +19,7 @@ void Map::Readmap(int MapNumber, int MapSize)
 	mapSize = MapSize;
 	maxBlock = 0;
 	BlockCount = 0;
-	int Map[mapNum][height][width] =
+	/*int Map[mapNum][height][width] =
 	{
 		{
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -153,17 +153,17 @@ void Map::Readmap(int MapNumber, int MapSize)
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }
 		},
-	};
+	};*/
 
-	//int Map1[height][width] = { 0 };
-	//LoadCSV(Map1, "./tamesi.csv"); //./tamesi.csvは読み込みの確認用に適当に作ったマップ
+	int Map[height][width] = { 0 };
+	LoadCSV(Map, stage[MapNumber]);
 
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
 
-			mainMap[y][x] = Map[MapNumber][y][x];
+			mainMap[y][x] = Map[y][x];
 			//プレイヤーの初期座標のマップチップを発見する
 			if (mainMap[y][x] == START)
 			{

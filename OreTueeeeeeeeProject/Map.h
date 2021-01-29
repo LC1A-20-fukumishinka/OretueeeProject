@@ -43,4 +43,13 @@ private:
 	static int startPosY;
 	static int maxBlock;
 	static int BlockCount;
+
+	char stage[Map::Size::mapNum][13] = {
+		"./stage1.csv",
+		"./stage2.csv",
+		"./stage3.csv",
+		"./stage4.csv",
+		"./stage5.csv",
+		"./stage6.csv",
+	};
 };
