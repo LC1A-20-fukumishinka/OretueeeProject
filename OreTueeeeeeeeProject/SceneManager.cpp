@@ -35,6 +35,8 @@ void SceneManager::Draw()
 	default:
 		break;
 	}
+
+	screenTrans.Draw();
 }
 
 void SceneManager::SceneChange()
@@ -53,6 +55,7 @@ void SceneManager::SceneChange()
 			//マップ読み込み
 			map.Readmap(select.SetStageNum(), mapSize);
 			game.Init();
+			screenTrans.Init(10, ScreenTrans::Mode::In);
 		}
 		break;
 	case GAME:
@@ -62,6 +65,7 @@ void SceneManager::SceneChange()
 		{
 			SceneStatus = RESULT;
 			result.Init();
+			screenTrans.Init(10, ScreenTrans::Mode::Out);
 		}
 		//ステージ選択に移行する
 		if (game.ChangeSelectScene())

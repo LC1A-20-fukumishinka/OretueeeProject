@@ -130,6 +130,7 @@
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="egudai_Death.cpp" />
     <ClCompile Include="egudai_Load.cpp" />
+    <ClCompile Include="egudai_ScreenTrans.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="collision.h" />
     <ClInclude Include="egudai_Death.h" />
     <ClInclude Include="egudai_Load.h" />
+    <ClInclude Include="egudai_ScreenTrans.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="Map.h" />
@@ -160,7 +162,7 @@
     <Image Include="particle.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="tamesi.csv" />
+    <None Include="map1.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
