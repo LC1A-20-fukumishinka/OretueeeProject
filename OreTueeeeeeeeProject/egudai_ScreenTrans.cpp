@@ -1,6 +1,5 @@
 #include "egudai_ScreenTrans.h"
 #include <DxLib.h>
-#include <vector>
 
 ScreenTrans::ScreenTrans()
 {
@@ -9,13 +8,29 @@ ScreenTrans::ScreenTrans()
 	size = 0;
 	exRota = 1;
 
+	mode = In;
+
 	isEnd = true;
 }
 
-void ScreenTrans::Init(int size)
+void ScreenTrans::Init(int size, int mode)
 {
 	this->size = size;
-	exRota = 1;
+	this->mode = mode;
+
+	if (mode < In || mode > Out)
+	{
+		return;
+	}
+
+	if (mode == In)
+	{
+		exRota = 0.5;
+	}
+	if (mode == Out)
+	{
+		exRota = 1.0;
+	}
 
 	isEnd = false;
 }
@@ -30,11 +45,30 @@ void ScreenTrans::Updata(void)
 		return;
 	}
 
-	exRota -= 0.03;
-
-	if (exRota < 0.5)
+	if (mode == In)
 	{
-		isEnd = true;
+		GetDrawScreenGraph(0, 0, WIN_WIDTH, WIN_HEIGHT, graph);
+
+		exRota += 0.02;
+
+		if (exRota > 1.0)
+		{
+			isEnd = true;
+		}
+
+		if (isEnd == false)
+		{
+			ClearDrawScreen();
+		}
+	}
+	if (mode == Out)
+	{
+		exRota -= 0.02;
+
+		if (exRota < 0.5)
+		{
+			isEnd = true;
+		}
 	}
 }
 
