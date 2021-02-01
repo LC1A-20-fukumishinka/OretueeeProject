@@ -23,7 +23,7 @@ void Scroll::Update()
 	scrollY = scrollPosY - (WIN_HEIGHT / 2);
 	if (scrollPosX <= scrollMinX)
 	{
-		scrollX = 0;
+		scrollX = scrollMinX - (WIN_WIDTH / 2);
 	}
 	else if (scrollPosX >= scrollMaxX)
 	{
@@ -31,11 +31,19 @@ void Scroll::Update()
 	}
 	if (scrollPosY <= scrollMinY)
 	{
-		scrollY = 0;
+		scrollY = scrollMinY - (WIN_HEIGHT / 2);
 	}
 	else if (scrollPosY >= scrollMaxY)
 	{
 		scrollY = scrollMaxY - (WIN_HEIGHT / 2);
+	}
+	if (scrollX < scrollMinX - (WIN_WIDTH / 2))
+	{
+		scrollX = scrollMinX - (WIN_WIDTH / 2);
+	}
+	if (scrollY < scrollMinY - (WIN_HEIGHT / 2))
+	{
+		scrollY = scrollMinY - (WIN_HEIGHT / 2);
 	}
 }
 

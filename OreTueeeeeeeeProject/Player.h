@@ -1,6 +1,8 @@
 #pragma once
 #include "Map.h"
 #include "Scroll.h"
+#include "EaseClass.h"
+#include "Warp.h"
 extern const int WIN_WIDTH;
 extern const int WIN_HEIGHT;
 extern const int Floor;
@@ -11,14 +13,35 @@ public:
 	void Init(double PlayerPosX, double PlayerPosY, double MaxDistance);
 	void Update();
 	void Draw();
+	double GetPosX();
+	double GetPosY();
 	bool GetGoalFlag();
+	bool GetReturnFlag();
+	bool GetItemFlag();
+	bool GetDeathFlag();
+
+	static int playerWarkGraph[7];
+	static int playerIdolGraph[2];
 private:
-	enum Status
+	enum acceleStatus
 	{
 		NORMAL,
 		SETTING,
 		ACCELE,
 		DEAD
+	};
+	enum animationStatus
+	{
+		IDOL,
+		WARK,
+		IDOL_TIMER=20,
+		WARK_TIMER = 5
+	};
+	enum pauseStatus
+	{
+		RESUME,
+		RETURN,
+		menuEnd
 	};
 	enum playerPos
 	{
@@ -49,6 +72,8 @@ private:
 	//実際の移動速度
 	double playerYSpeed;
 	double playerXSpeed;
+	double scrollDistanceX;
+	double scrollDistanceY;
 
 	//速度上限
 	int warkMaxSpeed;
@@ -63,11 +88,13 @@ private:
 	bool isCursorFlag;
 	//加速可能フラグ
 	bool isAcceleFlag;
+	//スクロール戻し描画フラグ
+	bool isScrollFlag;
 	//ゴールフラグ
-	bool goalFlag;
+	bool isGoalFlag;
 	//入力
-	int inputX;
-	int inputY;
+	int inputX,oldInputX;
+	int inputY,oldInputY;
 
 	//ひとつ前のフレームのフラグ
 	bool oldFlag;
@@ -79,6 +106,7 @@ private:
 
 	//自キャラの状態
 	int status;
+	int CancelTime;
 
 	//加速スピード
 	double acceleSpeed;
@@ -88,17 +116,35 @@ private:
 	//限界の距離
 	double maxDistance;
 
+	//アニメーション関係のステータス
+	int graphNum;
+	int animationTimer;
+	int animationStatus;
+	int animationOldStatus;
+	bool isTurnFlag;
+	bool isItemFlag;
+
+	//ポーズメニュー
+	bool isMenuFlag;
+	bool isReturnFlag;
+	bool isPauseFlag;
+	int menuStatus;
 
 	Map map;
 	Scroll scroll;
+	Easing easeScroll;
+	Warp clear;
 	void Joypad();
 	void Normal();
 	void Setting();
 	void Accele();
-	void Dead();
+	void Menu();
 	void Move();
 	void SetDrawPos();
 	void Collision();
 	void WallCollision(double PosX, double PosY);
 	void Edit();
+	void scrollUpdate();
+	void PlayerMapchipUpdate();
+	void Animation();
 };

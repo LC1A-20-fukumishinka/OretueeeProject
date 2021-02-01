@@ -1,4 +1,5 @@
 #pragma once
+#include "egudai_ScreenTrans.h"
 class Select
 {
 public:
@@ -17,4 +18,6 @@ private:
 	int stageNum;
 	int stageMaxNum;
 	bool isOKFlag;
+	bool isInFlag;
+	ScreenTrans fadeOut, fadeIn;
 };

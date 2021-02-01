@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "Scroll.h"
 #include "egudai_Death.h"
+#include "egudai_ScreenTrans.h"
 //ÉQÅ[ÉÄÉVÅ[Éì
 class Game
 {
@@ -19,10 +20,15 @@ private:
 	Scroll scroll;
 	Player player;
 	Map map;
+	int deathGraph[3];
 	int mapSize;
 	int sizeR;
 	bool isResultFlag;
 	bool isSelectFlag;
+	bool isEndFlag;
+	bool isInFlag;
+	bool isDeadFlag;
 
 	Death death;
+	ScreenTrans clear,stageIn,dead;
 };

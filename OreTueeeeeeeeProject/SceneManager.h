@@ -4,7 +4,6 @@
 #include "Game.h"
 #include "Map.h"
 #include "Result.h"
-#include "egudai_ScreenTrans.h"
 class SceneManager
 {
 public:
@@ -28,6 +27,4 @@ private:
 	Result result;
 	void SceneChange();
 	void SceneUpdate();
-
-	ScreenTrans screenTrans;
 };

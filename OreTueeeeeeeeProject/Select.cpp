@@ -6,16 +6,22 @@ Select::Select()
 {
 	stageNum = 0;
 	isOKFlag = false;
-	stageMaxNum = (Map::mapNum)-1;
+	isInFlag = true;
+	stageMaxNum = (Map::mapMaxNum)-1;
 	joypadX = 0;
 	joypadY = 0;
+	fadeIn.Init(32,fadeIn.In);
+	fadeOut.Init(32,fadeOut.Out);
 }
 
 void Select::Init()
 {
 	isOKFlag = false;
+	isInFlag = true;
 	joypadX = 0;
 	joypadY = 0;
+	fadeIn.Init(32, fadeIn.In);
+	fadeOut.Init(32, fadeOut.Out);
 }
 
 void Select::Update()
@@ -60,11 +66,18 @@ void Select::Draw()
 	DrawFormatString(0, 0, GetColor(0xFF, 0xFF, 0xFF), "SCENE:select");
 	DrawFormatString(0, 20, GetColor(0xFF, 0xFF, 0xFF), "Stage %d", stageNum + 1);
 	DrawFormatString(0, 40, GetColor(0xFF, 0xFF, 0xFF), "PRESS A");
+	if (isInFlag)
+	{
+		fadeIn.Draw();
+	}if (isOKFlag)
+	{
+		fadeOut.Draw();
+	}
 }
 
 bool Select::ChangeGameScene()
 {
-	return isOKFlag;
+	return fadeOut.GetFlag();
 }
 
 int Select::SetStageNum()

@@ -41,7 +41,6 @@ void ScreenTrans::Updata(void)
 	{
 		//‰æ–Ê‚ð‰æ‘œ‚Æ‚µ‚Ä•Û‘¶
 		GetDrawScreenGraph(0, 0, WIN_WIDTH, WIN_HEIGHT, graph);
-
 		return;
 	}
 
@@ -51,24 +50,30 @@ void ScreenTrans::Updata(void)
 
 		exRota += 0.02;
 
-		if (exRota > 1.0)
+		if (exRota >= 1.0)
 		{
 			isEnd = true;
+			return;
 		}
 
-		if (isEnd == false)
-		{
+		//if (isEnd == false)
+		//{
 			ClearDrawScreen();
-		}
+		//}
 	}
 	if (mode == Out)
 	{
+				GetDrawScreenGraph(0, 0, WIN_WIDTH, WIN_HEIGHT, graph);
 		exRota -= 0.02;
 
 		if (exRota < 0.5)
 		{
 			isEnd = true;
 		}
+		//if (isEnd == false)
+		//{
+			ClearDrawScreen();
+		//}
 	}
 }
 
