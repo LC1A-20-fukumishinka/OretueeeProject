@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -128,9 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="collision.cpp" />
+    <ClCompile Include="EaseClass.cpp" />
     <ClCompile Include="egudai_Death.cpp" />
     <ClCompile Include="egudai_Load.cpp" />
     <ClCompile Include="egudai_ScreenTrans.cpp" />
+    <ClCompile Include="egudai_Sound.cpp" />
+    <ClCompile Include="EraseGraph.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
@@ -140,13 +143,18 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Scroll.cpp" />
     <ClCompile Include="Select.cpp" />
+    <ClCompile Include="SlashEffect.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="Warp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="collision.h" />
+    <ClInclude Include="EaseClass.h" />
     <ClInclude Include="egudai_Death.h" />
     <ClInclude Include="egudai_Load.h" />
     <ClInclude Include="egudai_ScreenTrans.h" />
+    <ClInclude Include="egudai_Sound.h" />
+    <ClInclude Include="EraseGraph.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="Map.h" />
@@ -155,14 +163,38 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Scroll.h" />
     <ClInclude Include="Select.h" />
+    <ClInclude Include="SlashEffect.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="Warp.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="mapchip.png" />
     <Image Include="particle.png" />
+    <Image Include="playerDeath.png" />
+    <Image Include="playerIdol.png" />
+    <Image Include="playerWark.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="map1.csv" />
+    <None Include="map2.csv" />
+    <None Include="map3.csv" />
+    <None Include="map4.csv" />
+    <None Include="map5.csv" />
+    <None Include="map6.csv" />
+    <None Include="map7.csv" />
+    <None Include="map8.csv" />
+    <None Include="map9.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="accele.mp3" />
+    <Media Include="death.mp3" />
+    <Media Include="decision.mp3" />
+    <Media Include="game.mp3" />
+    <Media Include="goal.mp3" />
+    <Media Include="item.mp3" />
+    <Media Include="jump.mp3" />
+    <Media Include="select.mp3" />
+    <Media Include="wark.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -7,9 +7,9 @@ class Map
 public:
 	static enum Size
 	{
-		width = 50,
-		height = 20,
-		mapNum = 6
+		width = 100,
+		height = 100,
+		mapMaxNum = 9
 	};
 	static int mapSize;
 	static int mainMap[height][width];
@@ -23,33 +23,32 @@ public:
 		GOAL,
 		PILE,
 		LAVA,
-		MapChip
+		SCROLL_MIN,
+		SCROLL_MAX,
+		MapChip,
+		MapChipGraph = LAVA + 1
 	};
 	Map();
 	void Readmap(int MapNumber, int MapSize);
-	int GetMapNumber(double PosX,double PosY);
+	int GetMapNumber(double PosX, double PosY);
 	int GetStartPosX();
 	int GetStartPosY();
 	void ChangeMapNumber(double PosX, double PosY, int mapNumber);
 	void DrawBack();
 	void DrawFront();
+	int GetMapNumber();
 private:
 
 	Scroll scroll;
 	int mapChipGraph[MapChip];
 
-
+	static int mapNum;
 	static int startPosX;
 	static int startPosY;
+	static int scrollMinX;
+	static int scrollMinY;
+	static int scrollMaxX;
+	static int scrollMaxY;
 	static int maxBlock;
 	static int BlockCount;
-
-	char stage[Map::Size::mapNum][13] = {
-		"./stage1.csv",
-		"./stage2.csv",
-		"./stage3.csv",
-		"./stage4.csv",
-		"./stage5.csv",
-		"./stage6.csv",
-	};
 };

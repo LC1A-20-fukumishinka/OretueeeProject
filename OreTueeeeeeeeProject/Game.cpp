@@ -1,54 +1,91 @@
 #include "Game.h"
 #include "Map.h"
+#include "input.h"
+#include "DxLib.h"
 Game::Game()
 {
 	isResultFlag = false;
 	isSelectFlag = false;
+	isEndFlag = false;
+	isInFlag = true;
+	isDeadFlag = false;
 	mapSize=32;
 	sizeR = mapSize / 2;
+	LoadDivGraph("playerDeath.png",3,3,1,32,32,deathGraph);
+
 }
 
 void Game::Init()
 {
 	isResultFlag = false;
 	isSelectFlag = false;
+	isEndFlag = false;
+	isInFlag = true;
+	isDeadFlag = false;
 	player.Init(map.GetStartPosX()*mapSize+sizeR,map.GetStartPosY() * mapSize + sizeR,100);
+	stageIn.Init(32, stageIn.In);
+	clear.Init(32,clear.Out);
+	dead.Init(32, dead.Out);
 }
 
 void Game::Update()
 {
 	player.Update();
 	scroll.Update();
-	if (false) //ここの条件式は絶対に変えてください
+	if (player.GetDeathFlag()) //ここの条件式は絶対に変えてください
 	{
-		if (death.GetFlag() == true)
+		if (!isDeadFlag)
 		{
-			death.Init(400, 200, 16); //値は適当です
+			if (death.GetFlag() == true)
+			{
+				death.Init(player.GetPosX(), player.GetPosY(), 16, deathGraph[2]); //値は適当です
+			}
+			death.Update();
+			if (death.GetFlag() == true && death.GetOldFlag() == false)
+			{
+				/*死亡時の初期化*/
+				map.Readmap(map.GetMapNumber(), mapSize);
+				isDeadFlag = true;
+			}
 		}
-		death.Update();
-		if (death.GetFlag() == true && death.GetOldFlag() == false)
+		if (dead.GetFlag())
 		{
-			/*死亡時の初期化*/
-			map.Readmap(1, mapSize);
-
 			Init();
 		}
 	}
+	if (stageIn.GetFlag())
+	{
+		isInFlag = false;
+	}
+
 }
 
 void Game::Draw()
 {
-	map.DrawBack();
-	player.Draw();
-	map.DrawFront();
+		map.DrawBack();
+		player.Draw();
+		death.Draw();
+		map.DrawFront();
+		if (isInFlag)
+		{
+			stageIn.Draw();
+		}
+		if ((player.GetGoalFlag()))
+		{
+			clear.Draw();
+		}
+		if (isDeadFlag)
+		{
+			dead.Draw();
+		}
 }
 
 bool Game::ChangeResultScene()
 {
-	return player.GetGoalFlag();
+	return clear.GetFlag();
 }
 
 bool Game::ChangeSelectScene()
 {
-	return isSelectFlag;
+	return player.GetReturnFlag();
 }

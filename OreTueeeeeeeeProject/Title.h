@@ -1,4 +1,5 @@
 #pragma once
+#include"egudai_ScreenTrans.h"
 class Title
 {
 public:
@@ -8,5 +9,6 @@ public:
 	void Draw();
 	bool ChangeSelectScene();
 private:
-	bool flag;
+	bool isOutFlag,isSceneFlag;
+	ScreenTrans fadeOut;
 };

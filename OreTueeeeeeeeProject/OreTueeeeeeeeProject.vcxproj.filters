@@ -57,6 +57,21 @@
     <ClCompile Include="egudai_ScreenTrans.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="EaseClass.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="EraseGraph.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SlashEffect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Warp.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="egudai_Sound.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h">
@@ -98,6 +113,21 @@
     <ClInclude Include="egudai_ScreenTrans.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="EaseClass.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="EraseGraph.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SlashEffect.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Warp.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="egudai_Sound.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="mapchip.png">
@@ -106,10 +136,54 @@
     <Image Include="particle.png">
       <Filter>リソース ファイル</Filter>
     </Image>
+    <Image Include="playerDeath.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="playerIdol.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+    <Image Include="playerWark.png">
+      <Filter>リソース ファイル</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="map1.csv">
       <Filter>リソース ファイル</Filter>
     </None>
+    <None Include="map2.csv">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="map3.csv">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="map4.csv">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="map5.csv">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="map6.csv">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="map7.csv">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="map8.csv">
+      <Filter>リソース ファイル</Filter>
+    </None>
+    <None Include="map9.csv">
+      <Filter>リソース ファイル</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="accele.mp3" />
+    <Media Include="death.mp3" />
+    <Media Include="decision.mp3" />
+    <Media Include="game.mp3" />
+    <Media Include="goal.mp3" />
+    <Media Include="item.mp3" />
+    <Media Include="jump.mp3" />
+    <Media Include="select.mp3" />
+    <Media Include="wark.mp3" />
   </ItemGroup>
 </Project>
