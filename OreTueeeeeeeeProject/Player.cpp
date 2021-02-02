@@ -3,6 +3,7 @@
 #include "input.h"
 #include "collision.h"
 #include <math.h>
+#include "egudai_Sound.h"
 using namespace collision;
 
 int Player::playerIdolGraph[] = { 0 };
@@ -204,6 +205,7 @@ void Player::Normal()
 	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A) && (playerYSpeed == 0))
 	{
 		playerYSpeed = -10;
+		Sound::PlaySE(Sound::jump, false);
 	}
 	//ï‡Ç´ì¸óÕ
 	if ((inputX <= -100) && (playerXSpeed >= -warkMaxSpeed))
@@ -215,11 +217,22 @@ void Player::Normal()
 		playerXSpeed += warkSpeed;
 	}
 
+	//ï‡Ç´ÇÃâπê∫
+	if (playerYSpeed == 0 && playerXSpeed != 0)
+	{
+		Sound::PlaySE(Sound::wark, true);
+	}
+	else
+	{
+		StopSoundMem(Sound::wark);
+	}
+
 	//â¡ë¨ì¸óÕ
 	if (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B)
 	{
 		status = SETTING;
 		isCursorFlag = true;
+		Sound::StopSE();
 	}
 
 	//ë¨ìxÇÃé©ëRå∏êä
@@ -234,6 +247,7 @@ void Player::Normal()
 	if ((playerXSpeed < 0.3) && (playerXSpeed > -0.3))
 	{
 		playerXSpeed = 0;
+		StopSoundMem(Sound::wark);
 	}
 	//é©ëRóéâ∫
 	playerYSpeed += gravity;
@@ -349,7 +363,7 @@ void Player::Accele()
 		status = NORMAL;
 	}
 
-
+	Sound::PlaySE(Sound::accele, true);
 }
 
 void Player::Menu()
@@ -368,6 +382,7 @@ void Player::Menu()
 				menuStatus = RESUME;
 			}
 		}
+		Sound::PlaySE(Sound::decision, false);
 	}
 	isPauseFlag = GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_8;
 	if (!isMenuFlag)return;
@@ -378,6 +393,7 @@ void Player::Menu()
 		{
 			menuStatus = RESUME;
 		}
+		Sound::PlaySE(Sound::select, false);
 	}
 	if ((inputY <= -100) && (oldInputY > -100))
 	{
@@ -386,6 +402,7 @@ void Player::Menu()
 		{
 			menuStatus = menuEnd - 1;
 		}
+		Sound::PlaySE(Sound::select, false);
 	}
 	if (Input::IsPadATrigger())
 	{
@@ -400,7 +417,7 @@ void Player::Menu()
 		default:
 			break;
 		}
-
+		Sound::PlaySE(Sound::decision, false);
 	}
 	oldInputX = inputX;
 	oldInputY = inputY;
@@ -453,6 +470,7 @@ void Player::Collision()
 		{
 			map.ChangeMapNumber(playerCollisionX[i], playerCollisionY[i], Map::NONE);
 			isItemFlag = true;
+			Sound::PlaySE(Sound::item, false);
 		}
 		//ï«Ç∆ÇÃîªíË
 		if (MapchipCollision(map.GetMapNumber(playerCollisionX[i], playerCollisionY[i]), Map::WALL))
@@ -471,12 +489,14 @@ void Player::Collision()
 			clear.SetPos(playerDrawPosX, playerDrawPosY, playerR * 2, playerR * 2);
 			clear.SetFlag(true);
 			isGoalFlag = true;
+			Sound::PlaySE(Sound::goal, false);
 		}
 		if (MapchipCollision(map.GetMapNumber(playerCollisionX[i], playerCollisionY[i]), Map::LAVA))
 		{
 			if (BoxCollision(playerPosX - playerR, playerPosY - playerR, playerPosX + playerR, playerPosY + playerR, (playerCollisionX[i] / 32) * 32, (playerCollisionY[i] / 32) * 32 + 16, (playerCollisionX[i] / 32 + 1) * 32, (playerCollisionY[i] / 32 + 1) * 32))
 			{
 				status = DEAD;
+				Sound::PlaySE(Sound::death, true);
 			}
 
 		}

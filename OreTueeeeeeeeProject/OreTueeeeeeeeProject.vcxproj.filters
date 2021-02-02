@@ -69,6 +69,9 @@
     <ClCompile Include="Warp.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="egudai_Sound.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h">
@@ -122,6 +125,9 @@
     <ClInclude Include="Warp.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="egudai_Sound.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="mapchip.png">
@@ -168,5 +174,16 @@
     <None Include="map9.csv">
       <Filter>リソース ファイル</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="accele.mp3" />
+    <Media Include="death.mp3" />
+    <Media Include="decision.mp3" />
+    <Media Include="game.mp3" />
+    <Media Include="goal.mp3" />
+    <Media Include="item.mp3" />
+    <Media Include="jump.mp3" />
+    <Media Include="select.mp3" />
+    <Media Include="wark.mp3" />
   </ItemGroup>
 </Project>

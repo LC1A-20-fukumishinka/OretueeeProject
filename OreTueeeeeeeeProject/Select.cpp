@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include "input.h"
 #include "Map.h"
+#include "egudai_Sound.h"
 Select::Select()
 {
 	stageNum = 0;
@@ -34,12 +35,13 @@ void Select::Update()
 	{
 		stageNum++;
 		isSelectFlag = true;
+		Sound::PlaySE(Sound::select, false);
 	}
 	else if ((joypadX <= -300) && (oldpadX > -300))
 	{
 		stageNum--;
 		isSelectFlag = true;
-
+		Sound::PlaySE(Sound::select, false);
 	}
 	else
 	{
@@ -58,6 +60,7 @@ void Select::Update()
 	if (Input::IsPadATrigger())
 	{
 		isOKFlag = true;
+		Sound::PlaySE(Sound::decision, false);
 	}
 }
 

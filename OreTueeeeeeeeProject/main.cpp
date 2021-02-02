@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "SceneManager.h"
+#include "egudai_Sound.h"
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "wire_dash";
 
@@ -36,7 +37,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	SetDrawScreen(DX_SCREEN_BACK);
 
 	// 画像などのリソースデータの変数宣言と読み込み
-
+	Sound::Init();
 
 	// ゲームループで使う変数の宣言
 	SceneManager game;
@@ -55,6 +56,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		// 描画処理
 		game.Draw();
+
+		Sound::PlayBGM(Sound::bgm);
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
 		ScreenFlip();	

@@ -1,6 +1,7 @@
 #include "Title.h"
 #include "Dxlib.h"
 #include "input.h"
+#include "egudai_Sound.h"
 
 Title::Title()
 {
@@ -23,6 +24,7 @@ void Title::Update()
 		(GetJoypadInputState(DX_INPUT_KEY_PAD1) & PAD_INPUT_1))
 	{
 		isOutFlag = true;
+		Sound::PlaySE(Sound::decision, false);
 	}
 }
 
