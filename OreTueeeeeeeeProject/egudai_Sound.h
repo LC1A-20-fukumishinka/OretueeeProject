@@ -24,14 +24,12 @@ public:
 	static void StopBGM(void);
 	static void MuteBGM(void);
 	static void BGMVolumeUp(int volume);
-	static void BGMVolumeDown(int volume);
 	static int GetBGMVolume(void);
 
 	static void PlaySE(int SoundHandle, bool loopFlag = false);
 	static void StopSE(void);
 	static void MuteSE(void);
 	static void SEVolumeUp(int volume);
-	static void SEVolumeDown(int volume);
 	static int GetSEVolume(void);
 
 private:

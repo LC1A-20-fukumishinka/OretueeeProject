@@ -41,6 +41,8 @@ private:
 	{
 		RESUME,
 		RETURN,
+		BGM,
+		SE,
 		menuEnd
 	};
 	enum playerPos
