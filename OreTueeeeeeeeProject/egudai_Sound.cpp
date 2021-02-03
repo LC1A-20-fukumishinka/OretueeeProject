@@ -88,22 +88,6 @@ void Sound::BGMVolumeUp(int volume)
 	ChangeBGMVolume();
 }
 
-void Sound::BGMVolumeDown(int volume)
-{
-	bgmVolume -= volume;
-
-	if (bgmVolume >= 100)
-	{
-		bgmVolume = 100;
-	}
-	if (bgmVolume <= 0)
-	{
-		bgmVolume = 0;
-	}
-
-	ChangeBGMVolume();
-}
-
 int Sound::GetBGMVolume(void)
 {
 	return bgmVolume;
@@ -165,22 +149,6 @@ void Sound::MuteSE(void)
 void Sound::SEVolumeUp(int volume)
 {
 	seVolume += volume;
-
-	if (seVolume >= 100)
-	{
-		seVolume = 100;
-	}
-	if (seVolume <= 0)
-	{
-		seVolume = 0;
-	}
-
-	ChangeSEVolume();
-}
-
-void Sound::SEVolumeDown(int volume)
-{
-	seVolume -= volume;
 
 	if (seVolume >= 100)
 	{

@@ -161,6 +161,15 @@ void Player::Draw()
 		DrawFormatString(mainPosX, mainPosY, GetColor(0xBB, 0xBB, 0xBB), "RESUME");
 		DrawFormatString(mainPosX, mainPosY + 25, GetColor(0xBB, 0xBB, 0xBB), "SELECT");
 
+		DrawFormatString(mainPosX, mainPosY + 50, GetColor(0xBB, 0xBB, 0xBB), "BGM");
+		DrawLine(mainPosX + 35, mainPosY + 60, mainPosX + 135, mainPosY + 60, GetColor(0xBB, 0xBB, 0xBB));
+		DrawLine(mainPosX + 35, mainPosY + 60, mainPosX + 35 + Sound::GetBGMVolume(), mainPosY + 60, GetColor(0xBB, 0xBB, 0xBB), 5);
+		DrawCircle(mainPosX + 35 + Sound::GetBGMVolume(), mainPosY + 60, 5, GetColor(0xBB, 0xBB, 0xBB));
+		DrawFormatString(mainPosX, mainPosY + 75, GetColor(0xBB, 0xBB, 0xBB), "SE");
+		DrawLine(mainPosX + 35, mainPosY + 85, mainPosX + 135, mainPosY + 85, GetColor(0xBB, 0xBB, 0xBB));
+		DrawLine(mainPosX + 35, mainPosY + 85, mainPosX + 35 + Sound::GetSEVolume(), mainPosY + 85, GetColor(0xBB, 0xBB, 0xBB), 5);
+		DrawCircle(mainPosX + 35 + Sound::GetSEVolume(), mainPosY + 85, 5, GetColor(0xBB, 0xBB, 0xBB));
+
 		DrawTriangle(mainPosX - 5, mainPosY + 8 + (menuStatus * 25), mainPosX - 10, mainPosY + 3 + (menuStatus * 25), mainPosX - 10, mainPosY + 13 + (menuStatus * 25),
 			GetColor(0xBB, 0xBB, 0xBB), true);
 	}
@@ -418,6 +427,34 @@ void Player::Menu()
 			break;
 		}
 		Sound::PlaySE(Sound::decision, false);
+	}
+	if (inputX >= 100)
+	{
+		switch (menuStatus)
+		{
+		case BGM:
+			Sound::BGMVolumeUp(1);
+			break;
+		case SE:
+			Sound::SEVolumeUp(1);
+			break;
+		default:
+			break;
+		}
+	}
+	if (inputX <= -100)
+	{
+		switch (menuStatus)
+		{
+		case BGM:
+			Sound::BGMVolumeUp(-1);
+			break;
+		case SE:
+			Sound::SEVolumeUp(-1);
+			break;
+		default:
+			break;
+		}
 	}
 	oldInputX = inputX;
 	oldInputY = inputY;
